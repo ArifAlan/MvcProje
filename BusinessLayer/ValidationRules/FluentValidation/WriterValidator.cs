@@ -13,7 +13,8 @@ namespace BusinessLayer.ValidationRules.FluentValidation
         public WriterValidator()
         {
             RuleFor(p => p.WriterName).NotEmpty().WithMessage("Writer adını boş geçemezsiniz");
-            RuleFor(p => p.WriterAbout).NotEmpty().WithMessage("Açıklamayı boş geçemezsiniz");
+            RuleFor(p => p.WriterAbout).NotEmpty().WithMessage("Ünvan kısmını boş geçemezsiniz");
+         //   RuleFor(p => p.WriterTitle).NotEmpty().WithMessage("Açıklamayı boş geçemezsiniz");
             RuleFor(p => p.WriterName).MinimumLength(2).WithMessage("En az 2 karekter girişi yapın");
             RuleFor(p => p.WriterSurName).NotEmpty().WithMessage("Soyadını boş geçemezsiniz!");
             RuleFor(p => p.WriterSurName).MaximumLength(20).WithMessage("Maksimum 20 karekter olmalı!");
