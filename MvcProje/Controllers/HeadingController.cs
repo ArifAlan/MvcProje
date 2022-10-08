@@ -13,6 +13,7 @@ namespace MvcProje.Controllers
     {
         HeadingManager headingManager = new HeadingManager(new EfHeadingDal());
         CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
+        WriterManager writerManager = new WriterManager(new EfWriterDal());
         public ActionResult Index()
         {
             var headingValues = headingManager.GetAll();
@@ -27,7 +28,16 @@ namespace MvcProje.Controllers
                                                       Text = x.CategoryName,
                                                       Value=x.CategoryId.ToString()
                                                   }).ToList();
-            ViewBag.valuecategory = valueCategory;
+            ViewBag.vlc = valueCategory;
+
+            List<SelectListItem> valueWriter = (from x in writerManager.GetAll()
+                                                select new SelectListItem
+                                                {
+                                                    Text = x.WriterName + " " + x.WriterSurName,
+                                                    Value = x.WriterId.ToString()
+                                                }).ToList();
+            ViewBag.writerVlc = valueWriter;
+
             return View();
         }
         [HttpPost]
@@ -36,6 +46,20 @@ namespace MvcProje.Controllers
             heading.HeadingDate = DateTime.Parse(DateTime.Now.ToShortDateString());
             headingManager.Add(heading);
             return RedirectToAction("Index");
+        }
+        [HttpGet]
+       public ActionResult EditHeading(int id)
+        {
+            List<SelectListItem> valueCategory = (from x in categoryManager.GetAll()
+                                                  select new SelectListItem
+                                                  {
+                                                      Text = x.CategoryName,
+                                                      Value = x.CategoryId.ToString()
+                                                  }).ToList();
+            ViewBag.vlc = valueCategory;
+
+            var headingValue=headingManager.GetById(id) ;
+            return View(headingValue);
         }
     }
 }

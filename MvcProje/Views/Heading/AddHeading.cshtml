@@ -1,4 +1,5 @@
 ﻿@model EntityLayer.Concrete.Heading
+
 @{
     ViewBag.Title = "AddHeading";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -8,24 +9,24 @@
 <br />
 @using (Html.BeginForm("AddHeading", "Heading", FormMethod.Post)) //methodun çalışma zamanı
 {
-    <div class="form-group">
+<div class="form-group">
 
-        @Html.Label("Başlık Adı")
-        @Html.TextBoxFor(x => x.HeadingName, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.HeadingName)
-        <br />
-        @Html.Label("Kategori")
-        @Html.TextBoxFor(x => x.CategoryId, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.CategoryId)
-        <br />
-        @Html.Label("Yazar ")
-        @Html.TextBoxFor(x => x.WriterId, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.WriterId)
-        <br />
-        
-       
+    @Html.Label("Başlık Adı")
+    @Html.TextBoxFor(x => x.HeadingName, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.HeadingName)
+    <br />
+    @Html.Label("Kategori")
+    @Html.DropDownListFor(x => x.CategoryId, (List<SelectListItem>)ViewBag.vlc, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.CategoryId)
+    <br />
+    @Html.Label("Yazar ")
+    @Html.DropDownListFor(x => x.WriterId, (List<SelectListItem>)ViewBag.writerVlc, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.WriterId)
+    <br />
 
-        <button class="btn btn-info">Başlığı oluştur</button>
-    </div>
+
+
+    <button class="btn btn-info">Başlığı oluştur</button>
+</div>
 }
 
