@@ -61,5 +61,18 @@ namespace MvcProje.Controllers
             var headingValue=headingManager.GetById(id) ;
             return View(headingValue);
         }
+        [HttpPost]
+        public ActionResult EditHeading(Heading heading)
+        {
+            headingManager.Update(heading);
+            return RedirectToAction("Index");
+        }
+        public ActionResult HeadingDelete(int id)
+        {
+            var headingValue = headingManager.GetById(id);
+            headingValue.HeadingStatus = false;
+            headingManager.Delete(headingValue);
+            return RedirectToAction("Index");
+        }
     }
 }
