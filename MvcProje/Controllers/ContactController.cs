@@ -13,12 +13,21 @@ namespace MvcProje.Controllers
     public class ContactController : Controller
     {
         //private MessageManager _messageManager = new MessageManager(new EfMessageDal());
-        private ContactManager _contactManager = new ContactManager(new EfContactDal());
+        private ContactManager contactManager = new ContactManager(new EfContactDal());
         ContactValidator contactValidator = new ContactValidator();
         public ActionResult Index()
         {
-            var result = _contactManager.GetAll();
+            var result = contactManager.GetAll();
             return View(result);
+        }
+        public ActionResult GetContactDetails(int id)
+        {
+            var result = contactManager.GetById(id);
+            return View(result);
+        }
+        public PartialViewResult MessageListMenu()
+        {
+            return PartialView();
         }
     }
 }
