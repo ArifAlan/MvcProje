@@ -12,7 +12,7 @@ namespace MvcProje.Controllers
 {
     public class ContactController : Controller
     {
-        //private MessageManager _messageManager = new MessageManager(new EfMessageDal());
+        //private MessageManager messageManager = new MessageManager(new EfMessageDal());
         private ContactManager contactManager = new ContactManager(new EfContactDal());
         ContactValidator contactValidator = new ContactValidator();
         public ActionResult Index()
@@ -27,6 +27,10 @@ namespace MvcProje.Controllers
         }
         public PartialViewResult MessageListMenu()
         {
+            var contactList = contactManager.GetAll();
+            ViewBag.contactCount = contactList.Count();
+        
+
             return PartialView();
         }
     }
