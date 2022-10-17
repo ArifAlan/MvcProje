@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+
 
 namespace MvcProje.Controllers
 {
@@ -16,21 +18,24 @@ namespace MvcProje.Controllers
         {
             return View();
         }
+
          [HttpPost]
-        public ActionResult Index(Admin admin)
+        public ActionResult Index (Admin admin)
         {
             Context context = new Context();
             var adminUserInfo = context.Admins.FirstOrDefault(x => x.AdminUserName == admin.AdminUserName && x.AdminPassword == admin.AdminPassword);
-            if (adminUserInfo!=null)
+            if (adminUserInfo !=null)
             {
-                return RedirectToAction("Index","AdminCategory");
+                FormsAuthentication.SetAuthCookie(adminUserInfo.AdminUserName, false);
+                Session["AdminUserName"] = adminUserInfo.AdminUserName ;
+                return RedirectToAction("Index", "AdminCategory");
             }
             else
             {
                 return RedirectToAction("Index");
             }
            
-            return View();
+           
         }
     }
 }
