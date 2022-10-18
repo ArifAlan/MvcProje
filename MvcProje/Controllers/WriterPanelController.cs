@@ -9,46 +9,47 @@ using System.Web.Mvc;
 
 namespace MvcProje.Controllers
 {
-    public class HeadingController : Controller
+    public class WriterPanelController : Controller
     {
+        // GET: WriterPanel
         HeadingManager headingManager = new HeadingManager(new EfHeadingDal());
         CategoryManager categoryManager = new CategoryManager(new EfCategoryDal());
-        WriterManager writerManager = new WriterManager(new EfWriterDal());
-        public ActionResult Index()
+
+        public ActionResult WriterProfile()
         {
-            var headingValues = headingManager.GetAll();
-            return View(headingValues);
+            return View();
+        }
+       
+        public ActionResult MyHeading()
+        {
+          
+            var values = headingManager.GetListByWriter();
+            return View(values);
         }
         [HttpGet]
-        public ActionResult AddHeading()
+        public ActionResult NewHeading()
         {
             List<SelectListItem> valueCategory = (from x in categoryManager.GetAll()
                                                   select new SelectListItem
                                                   {
                                                       Text = x.CategoryName,
-                                                      Value=x.CategoryId.ToString()
+                                                      Value = x.CategoryId.ToString()
                                                   }).ToList();
             ViewBag.vlc = valueCategory;
-
-            List<SelectListItem> valueWriter = (from x in writerManager.GetAll()
-                                                select new SelectListItem
-                                                {
-                                                    Text = x.WriterName + " " + x.WriterSurName,
-                                                    Value = x.WriterId.ToString()
-                                                }).ToList();
-            ViewBag.writerVlc = valueWriter;
-
             return View();
         }
         [HttpPost]
-        public ActionResult AddHeading(Heading heading)
+        public ActionResult NewHeading(Heading heading)
         {
             heading.HeadingDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+            heading.WriterId = 6;
+            heading.HeadingStatus = true;
             headingManager.Add(heading);
-            return RedirectToAction("Index");
+            return RedirectToAction("MyHeading");
         }
+
         [HttpGet]
-       public ActionResult EditHeading(int id)
+        public ActionResult EditHeading(int id)
         {
             List<SelectListItem> valueCategory = (from x in categoryManager.GetAll()
                                                   select new SelectListItem
@@ -58,22 +59,21 @@ namespace MvcProje.Controllers
                                                   }).ToList();
             ViewBag.vlc = valueCategory;
 
-            var headingValue=headingManager.GetById(id) ;
+            var headingValue = headingManager.GetById(id);
             return View(headingValue);
         }
         [HttpPost]
         public ActionResult EditHeading(Heading heading)
         {
             headingManager.Update(heading);
-            return RedirectToAction("Index");
+            return RedirectToAction("MyHeading");
         }
-
         public ActionResult HeadingDelete(int id)
         {
             var headingValue = headingManager.GetById(id);
             headingValue.HeadingStatus = false;
             headingManager.Delete(headingValue);
-            return RedirectToAction("Index");
+            return RedirectToAction("MyHeading");
         }
     }
 }
