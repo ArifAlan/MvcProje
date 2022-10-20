@@ -1,6 +1,8 @@
 ﻿using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules.FluentValidation;
 using DataAccessLayer.EntityFramework;
+using EntityLayer.Concrete;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +44,35 @@ namespace MvcProje.Controllers
         {
             var result = messageManager.GetById(id);
             return View(result);
+        }
+        [HttpGet]
+        public ActionResult NewMessage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult NewMessage(Message message)
+        {
+            ValidationResult results = messageValidator.Validate(message);
+            if (results.IsValid)
+            {
+                message.SenderMail = "arif@gmail.com";
+                message.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+                messageManager.Add(message);
+                return RedirectToAction("Sendbox");
+            }
+            else
+            {
+                foreach (var item in results.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+
+                }
+            }
+
+
+            return View();
         }
     }
 }
