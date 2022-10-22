@@ -86,5 +86,10 @@ namespace MvcProje.Controllers
             headingManager.Delete(headingValue);
             return RedirectToAction("MyHeading");
         }
+        public ActionResult AllHeading()
+        {
+            var headings = headingManager.GetAll();
+            return View(headings);
+        }
     }
 }
