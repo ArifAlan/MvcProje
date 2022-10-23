@@ -3,14 +3,15 @@
     ViewBag.Title = "AddContent";
     Layout = "~/Views/Shared/_WriterLayout.cshtml";
 }
-<h1>Yeni Başlık Ekleme</h1>
+<h1>İçerik Girişi</h1>
 <br />
-@using (Html.BeginForm("AddHeading", "Heading", FormMethod.Post)) //methodun çalışma zamanı
+@using (Html.BeginForm("AddContent", "WriterPanelContent", FormMethod.Post)) //methodun çalışma zamanı
 {
     <div class="form-group">
-
+        <input type="hidden" name="HeadingId" value="@ViewBag.d"/>
+   
         @Html.Label("İçeriğinizi Yazın")
-        @Html.TextAreaFor(x => x.ContentValue,4,30, new { @class = "form-control" })
+        @Html.TextAreaFor(x => x.ContentValue,8,30, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.ContentValue)
   
         <br />
