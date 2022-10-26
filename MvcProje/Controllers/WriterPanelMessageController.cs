@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Concrete;
 using BusinessLayer.ValidationRules.FluentValidation;
+using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
@@ -15,17 +16,21 @@ namespace MvcProje.Controllers
     {
         private MessageManager messageManager = new MessageManager(new EfMessageDal());
         private MessageValidator messageValidator = new MessageValidator();
+       
 
         // GET: WriterPanelMessage
-        public ActionResult Inbox()
+        public ActionResult Inbox( )
         {
-            var messageList = messageManager.GetListInbox();
+            string parametre = (string)Session["WriterMail"];
+            
+            var messageList = messageManager.GetListInbox(parametre);
             return View(messageList);
         }
 
         public ActionResult Sendbox()
         {
-            var messageList = messageManager.GetListSendbox();
+            string parametre = (string)Session["WriterMail"];
+            var messageList = messageManager.GetListSendbox(parametre);
             return View(messageList);
         }
 
@@ -54,10 +59,11 @@ namespace MvcProje.Controllers
         [HttpPost]
         public ActionResult NewMessage(Message message)
         {
+            string sender = (string)Session["WriterMail"];
             ValidationResult results = messageValidator.Validate(message);
             if (results.IsValid)
             {
-                message.SenderMail = "arif@gmail.com";
+                message.SenderMail = sender;
                 message.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
                 messageManager.Add(message);
                 return RedirectToAction("Sendbox");

@@ -20,14 +20,14 @@ namespace MvcProje.Controllers
         // GET: Message
 
         [Authorize]
-        public ActionResult Inbox()
+        public ActionResult Inbox(string parametre)
         {
-            var messageList = messageManager.GetListInbox();
+            var messageList = messageManager.GetListInbox(parametre);
            return View(messageList);
         }
-        public ActionResult Sendbox()
+        public ActionResult Sendbox(string parametre)
         {
-            var messageList = messageManager.GetListSendbox();
+            var messageList = messageManager.GetListSendbox(parametre);
             return View(messageList);
         }
 
