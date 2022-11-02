@@ -27,9 +27,9 @@ namespace BusinessLayer.Concrete
             _contentDal.Delete(content);
         }
 
-        public List<Content> GetAll()
+        public List<Content> GetAll(string parametre)
         {
-            return _contentDal.List();
+            return _contentDal.List(x=>x.ContentValue.Contains(parametre));
         }
 
         public Content GetById(int id)
